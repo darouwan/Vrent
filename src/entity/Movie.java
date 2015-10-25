@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
  * Created by Junfeng on 2015/10/24.
  */
 public class Movie implements Serialize {
+
     String title;
     String year  ;
     String director  ;
