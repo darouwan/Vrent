@@ -1,3 +1,5 @@
+package entity;
+
 /**
  * Created by Junfeng on 2015/10/24.
  */
@@ -10,6 +12,7 @@ public class Privilege {
     private double replacementFee ;
     private double lateFee ;
     private double regFee ;
+
 
     public Privilege(int maxQuota, int currentQuota, double rentFee, double renewFee, double replacementFee, double lateFee, double regFee) {
         this.maxQuota = maxQuota;
@@ -80,4 +83,6 @@ public class Privilege {
     public void setRegFee(double regFee) {
         this.regFee = regFee;
     }
+
+
 }
