@@ -1,8 +1,8 @@
 package entity;
 
 import entity.Member;
+import systen.Serialize;
 
-import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /**

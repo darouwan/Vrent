@@ -1,5 +1,7 @@
 package entity;
 
+import systen.Serialize;
+
 import java.util.StringTokenizer;
 
 /**
