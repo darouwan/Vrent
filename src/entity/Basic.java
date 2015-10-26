@@ -10,27 +10,31 @@ import java.util.StringTokenizer;
  */
 
 public class Basic extends Member implements Serialize {
+    static int increasementID = 0;
+    int id;
+    String contactNo;
+    String name;
+    String add;
+    String number;
     double rentFee ;
     double renewFee ;
     double lateFee ;
     double replaceFeeDVD ;
     double replaceFeeVCD ;
 
-
     @Override
     public String toString() {
         return "Basic{" +
-                "rentFee=" + rentFee +
-                ", renewFee=" + renewFee +
-                ", lateFee=" + lateFee +
-                ", replaceFeeDVD=" + replaceFeeDVD +
-                ", replaceFeeVCD=" + replaceFeeVCD +
+                "contactNo='" + contactNo + '\'' +
+                ", name='" + name + '\'' +
+                ", add='" + add + '\'' +
+                ", number='" + number + '\'' +
                 '}';
     }
 
     public static Basic getInstance(String s) {
         StringTokenizer tokenizer = new StringTokenizer(s, "|");
-        return new Basic(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken(), Double.parseDouble(tokenizer.nextToken()),
+        return new Basic(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken(), Double.parseDouble(tokenizer.nextToken()),
                 Double.parseDouble(tokenizer.nextToken()), Double.parseDouble(tokenizer.nextToken()), Double.parseDouble(tokenizer.nextToken()),
                 Double.parseDouble(tokenizer.nextToken()));
 
@@ -38,20 +42,25 @@ public class Basic extends Member implements Serialize {
 
     public String serialize() {
 
-        return super.serialize() + "|" + rentFee + "|" + renewFee + "|" + lateFee + "|" + replaceFeeDVD + "|" + replaceFeeVCD;
+        return contactNo + "|" + name + "|" + add + "|" + number + "|" + rentFee + "|" + renewFee + "|" + lateFee + "|" + replaceFeeDVD + "|" + replaceFeeVCD;
     }
 
 
     public void upgradeMem(String contactNo  ){
 
     }
-    public Basic(String contactNo, String name, String add, double rentFee, double renewFee, double lateFee, double replaceFeeDVD, double replaceFeeVCD) {
-        super(contactNo, name, add);
+
+    public Basic(String contactNo, String name, String add, String number, double rentFee, double renewFee, double lateFee, double replaceFeeDVD, double replaceFeeVCD) {
+        this.contactNo = contactNo;
+        this.name = name;
+        this.add = add;
+        this.number = number;
         this.rentFee = rentFee;
         this.renewFee = renewFee;
         this.lateFee = lateFee;
         this.replaceFeeDVD = replaceFeeDVD;
         this.replaceFeeVCD = replaceFeeVCD;
+        this.id = increasementID++;
     }
 
     public double getRentFee() {
@@ -94,5 +103,51 @@ public class Basic extends Member implements Serialize {
         this.replaceFeeVCD = replaceFeeVCD;
     }
 
+    public static int getIncreasementID() {
+        return increasementID;
+    }
 
+    public static void setIncreasementID(int increasementID) {
+        Basic.increasementID = increasementID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAdd() {
+        return add;
+    }
+
+    public void setAdd(String add) {
+        this.add = add;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }

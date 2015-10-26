@@ -2,6 +2,7 @@ package systen;
 
 import entity.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class VideoShop {
     private static VideoShop theOne = new VideoShop();
 
     private MovieSystem movieSystem = new MovieSystem();
+    private ArrayList members = new ArrayList();
 
     private VideoShop() {
     }
@@ -41,10 +43,55 @@ public class VideoShop {
     public void displayMovieTitle() {
     }
 
-    public void createMember(String ContactNo, String name, String add) {
+    public void createMember(String ContactNo, String name, String add, String number, String type) {
+        if (type.equals("B")) {
+            Basic basic = new Basic(ContactNo, name, add, number, 0, 0, 0, 0, 0);
+            members.add(basic);
+        } else {
+            Premium premium = new Premium(ContactNo, name, add, number, 0, 0, 0, 0, 0);
+            members.add(premium);
+        }
     }
 
-    public void upgradeMember(String ContactNo) {
+    public List getAllMembers() {
+        return members;
+    }
+
+    public boolean deleteMember(String number) {
+
+        for (int i = 0; i < members.size(); i++) {
+            Member member = (Member) members.get(i);
+            if (member instanceof Basic) {
+                if (number.equals(((Basic) member).getNumber())) {
+                    members.remove(i);
+                    return true;
+                }
+            } else if (member instanceof Premium) {
+                if (number.equals(((Premium) member).getNumber())) {
+                    members.remove(i);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public Premium upgradeMember(String number) {
+        for (int i = 0; i < members.size(); i++) {
+            Member member = (Member) members.get(i);
+            if (member instanceof Basic) {
+                if (number.equals(((Basic) member).getNumber())) {
+
+                    Premium premium = new Premium(((Basic) member).getContactNo(), ((Basic) member).getName(), ((Basic) member).getAdd(),
+                            ((Basic) member).getNumber(), 0, 0, 0, 0, 0);
+                    members.set(i, premium);
+                    return premium;
+                }
+            }
+        }
+
+        return null;
     }
 
     public void cancelMember(String ContactNo) {
@@ -79,4 +126,6 @@ public class VideoShop {
     public Payment getPayment() {
         return null;
     }
+
+
 }

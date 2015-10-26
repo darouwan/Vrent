@@ -1,6 +1,9 @@
 package systen;
 
+import entity.Basic;
+import entity.Member;
 import entity.Movie;
+import entity.Premium;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
@@ -148,18 +151,54 @@ public class UI {
         System.out.println("4. View Member List");
         System.out.println("5. Query Member Details");
         System.out.println("0. Main Menu");
+
+        System.out.println("Enter option: ");
+        String option = readInput();
+        if (option.equals("1")) {
+            displayregisterMember();
+        } else if (option.equals("2")) {
+            displayDeleteMember();
+        } else if (option.equals("3")) {
+            displayUpgradeMembership();
+        } else if (option.equals("4")) {
+            dispplayMembershipRecord();
+        } else if (option.equals("5")) {
+            displayQueryMember();
+        } else if (option.equals("0")) {
+            return;
+        }
     }
 
     public void displayregisterMember() {
         System.out.println(">>Register Member<<");
         System.out.println("Enter details of new member:");
-        System.out.println("Name:");
-        System.out.println("Member Number:");
-        System.out.println("Address:");
+        System.out.print("Name:");
+        String name = readInput();
+        System.out.print("Member Number:");
+        String number = readInput();
+        System.out.print("Address:");
+        String address = readInput();
         System.out.println("Contact No:");
+        String contactNO = readInput();
         System.out.println("Type (B/P):");
+        String type = readInput();
+
+        videoShop.createMember(contactNO, name, address, number, type);
+
+
+
         System.out.println(">> Displaying all members <<");
-        System.out.println("Name:");
+
+        List members = videoShop.getAllMembers();
+
+        for (Object member : members) {
+            if (member instanceof Basic) {
+                System.out.println((Basic) member);
+            } else if (member instanceof Premium) {
+                System.out.println((Premium) member);
+            }
+        }
+
         System.out.println("Saving Performed");
         System.out.println("Hit Enter to return to Main Menu");
     }
@@ -167,23 +206,53 @@ public class UI {
     public void displayDeleteMember() {
         System.out.println(">>Delete Member<<");
         System.out.println("Enter Member Number: ");
-        System.out.println("Saving Performed");
-        System.out.println("Member is deleted");
+
+        String number = readInput();
+
+        boolean result = videoShop.deleteMember(number);
+        if (result) {
+            System.out.println("Saving Performed");
+            System.out.println("Member is deleted");
+        } else {
+            System.out.println("Member not found");
+        }
+
         System.out.println("Hit Enter to return to Main Menu");
 
-
+        readInput();
     }
 
     public void displayUpgradeMembership() {
         System.out.println(">>Upgrade Member<<");
         System.out.println("Enter Member Number to upgrade :");
         System.out.println("Upgraded Member Details: ");
+
+        String number = readInput();
+
+
+        System.out.println("Upgraded Member Details: ");
+        Premium premium = videoShop.upgradeMember(number);
+        if (premium != null) {
+            System.out.println(premium);
+        }
+
         System.out.println("Saving Performed");
         System.out.println("Hit Enter to return to Main Menu");
     }
 
     public void dispplayMembershipRecord() {
         System.out.println(">>View Member List<<");
+
+        List members = videoShop.getAllMembers();
+
+        for (Object member : members) {
+            if (member instanceof Basic) {
+                System.out.println((Basic) member);
+            } else if (member instanceof Premium) {
+                System.out.println((Premium) member);
+            }
+        }
+
         System.out.println("Hit Enter to return to Main Menu");
     }
 
@@ -193,5 +262,13 @@ public class UI {
 
     public void displayMovieRental() {
         System.out.println(">>Movie Rental<<");
+
+        System.out.print("Enter Member Number:");
+        System.out.print("Enter Movie Title: ");
+        System.out.print("Enter Movie Format: ");
+        System.out.println("Saving Performed Continue to rent more movies? 1. Yes  2. No  ");
+        String option = readInput();
+
+
     }
 }
