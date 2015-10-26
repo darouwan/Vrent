@@ -2,6 +2,7 @@ package entity;
 
 import systen.Serialize;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
@@ -9,16 +10,27 @@ import java.util.StringTokenizer;
  */
 public class Movie implements Serialize {
 
+    static int increasementID = 0;
+    int id;
     String title;
-    String year  ;
-    String director  ;
-    String rating  ;
-    String genre  ;
+    String year;
+    String director;
+    String rating;
+    String genre;
+    ArrayList<Copy> copies = new ArrayList<Copy>();
+
+    public void addCopy(String format, double cost, String status, int quantity) {
+        Copy copy = new Copy(format, status, cost);
+        for (int i = 0; i < quantity; i++) {
+            copies.add(copy);
+        }
+    }
 
     @Override
     public String toString() {
         return "Movie{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", year='" + year + '\'' +
                 ", director='" + director + '\'' +
                 ", rating='" + rating + '\'' +
@@ -41,8 +53,18 @@ public class Movie implements Serialize {
 
     }
 
-    public Movie( String t  ,int yr  ,String dir  ,String r  ,String g  ){}
-    public void checkAvailableCopy(){}
+    public Movie(String title, String year, String director, String rating, String genre) {
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.rating = rating;
+        this.genre = genre;
+        this.id = increasementID++;
+
+    }
+
+    public void checkAvailableCopy() {
+    }
 
     public String getTitle() {
         return title;
