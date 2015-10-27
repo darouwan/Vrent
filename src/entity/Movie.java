@@ -19,29 +19,36 @@ public class Movie implements Serialize {
     String genre;
     ArrayList<Copy> copies = new ArrayList<Copy>();
 
+    public ArrayList<Copy> getCopies() {
+        return copies;
+    }
+
+    public void setCopies(ArrayList<Copy> copies) {
+        this.copies = copies;
+    }
+
     public void addCopy(String format, double cost, String status, int quantity) {
-        Copy copy = new Copy(format, status, cost);
         for (int i = 0; i < quantity; i++) {
+            Copy copy = new Copy(format, status, cost);
             copies.add(copy);
         }
     }
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", year='" + year + '\'' +
-                ", director='" + director + '\'' +
-                ", rating='" + rating + '\'' +
-                ", genre='" + genre + '\'' +
-                '}';
+        return
+                "title=" + title +
+                        ", year=" + year +
+                        ", director=" + director +
+                        ", rating=" + rating +
+                        ", genre=" + genre;
     }
 
     public String serialize() {
 
         return title + "|" + year + "|" + director + "|" + rating + "|" + genre;
     }
+
 
     public Movie(String s) {
         StringTokenizer tokenizer = new StringTokenizer(s, "|");

@@ -1,11 +1,9 @@
 package systen;
 
-import entity.Basic;
-import entity.Member;
-import entity.Movie;
-import entity.Premium;
+import entity.*;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import util.TextUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,10 +13,10 @@ import java.util.Scanner;
  */
 public class UI {
     VideoShop videoShop = VideoShop.getInstance();
-
+    TextUtil textUtil = new TextUtil();
     public void start() {
         boolean continueit = true;
-
+        textUtil.readFromFile();
         while (continueit) {
             displayMainMenu();
             String option = readInput();
@@ -31,15 +29,83 @@ public class UI {
             } else if (option.equals("3")) {
                 this.displayMovieRental();
             } else if (option.equals("4")) {
-
+                this.displayMovieReturn();
             } else if (option.equals("5")) {
-
+                this.displaySeatchMovie();
             } else if (option.equals("0")) {
+
+                textUtil.init();
+                textUtil.movieToText();
+                textUtil.memberToText();
+
+                textUtil.close();
                 continueit = false;
             }
         }
 
 
+    }
+
+    private void displayMovieReturn() {
+        String next = "1";
+        while (next.equals("1")) {
+
+            System.out.print("Enter Member Number:");
+            String memberNum = readInput();
+            System.out.print("Enter movie title to return: ");
+            String title = readInput();
+            System.out.print("Enter movie format [VCD/DVD]: ");
+            String format = readInput();
+            System.out.print("Confirm? ");
+            System.out.println("1. Yes     2. No, return to Main Menu");
+            String option = readInput();
+            if (option.equals("1")) {
+                videoShop.collectMovie(title, format, memberNum);
+            } else {
+                return;
+            }
+            System.out.println("Any more movies to return?");
+            System.out.println("1. Yes     2. No ");
+            System.out.print("Enter option: ");
+            next = readInput();
+
+        }
+        System.out.println("Fines incurred: $0.0 ");
+        System.out.println("Saving Performed ");
+        System.out.println("Hit Enter to return to Main Menu ");
+        readEnter();
+    }
+
+    private void displaySeatchMovie() {
+        System.out.println(">>Search Movie<< ");
+        System.out.println("Search criteria");
+        System.out.println("1. Title");
+        System.out.println("2. Year ");
+        System.out.println("3. Director ");
+        System.out.println("4. Rating");
+        System.out.println("5. Genre ");
+        System.out.println("0. Main Menu");
+        System.out.print("Enter option: ");
+        String option = readInput();
+        String meta = "";
+        if (option.equals("1")) {
+            meta = "title";
+        } else if (option.equals("2")) {
+            meta = "year";
+        } else if (option.equals("3")) {
+            meta = "director";
+        } else if (option.equals("4")) {
+            meta = "rating";
+        } else if (option.equals("5")) {
+            meta = "genre";
+        } else if (option.equals("0")) {
+            return;
+        }
+        System.out.print("Enter " + meta + "  to be searched: ");
+        String keyword = readInput();
+
+        Movie movie = videoShop.searchMovie(keyword, meta);
+        System.out.println(movie);
     }
 
     public static String readInput() {
@@ -48,8 +114,15 @@ public class UI {
         return a;
     }
 
+    public static void readEnter() {
+        Scanner in = new Scanner(System.in);
+        String a = in.nextLine();
+
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(readInput());
+        readEnter();
     }
 
     public void displayMainMenu() {
@@ -121,7 +194,10 @@ public class UI {
         String option = readInput();
 
         if (option.equals("1")) {
-            videoShop.createMovie(title, year, director, rating, genre, format, Double.parseDouble(cost), Integer.parseInt(quantity));
+            Movie movie = videoShop.createMovie(title, year, director, rating, genre, format, Double.parseDouble(cost), Integer.parseInt(quantity));
+            for (Copy copy : movie.getCopies()) {
+                System.out.println(copy);
+            }
 
         } else if (option.equals("2")) {
             return;
@@ -130,6 +206,7 @@ public class UI {
         System.out.println("Saving Performed");
         System.out.println("Movie(s) is added to store");
         System.out.println("Hit Enter to return to Main Menu");
+        readEnter();
 
     }
 
@@ -139,8 +216,7 @@ public class UI {
             System.out.println(movie);
         }
         System.out.println("Hit Enter to return to Main Menu");
-        String option = readInput();
-        return;
+        readEnter();
     }
 
     public void displayMembershipRecord() {
@@ -186,7 +262,6 @@ public class UI {
         videoShop.createMember(contactNO, name, address, number, type);
 
 
-
         System.out.println(">> Displaying all members <<");
 
         List members = videoShop.getAllMembers();
@@ -201,6 +276,7 @@ public class UI {
 
         System.out.println("Saving Performed");
         System.out.println("Hit Enter to return to Main Menu");
+        readEnter();
     }
 
     public void displayDeleteMember() {
@@ -219,7 +295,7 @@ public class UI {
 
         System.out.println("Hit Enter to return to Main Menu");
 
-        readInput();
+        readEnter();
     }
 
     public void displayUpgradeMembership() {
@@ -238,6 +314,7 @@ public class UI {
 
         System.out.println("Saving Performed");
         System.out.println("Hit Enter to return to Main Menu");
+        readEnter();
     }
 
     public void dispplayMembershipRecord() {
@@ -254,21 +331,54 @@ public class UI {
         }
 
         System.out.println("Hit Enter to return to Main Menu");
+        readEnter();
     }
 
     public void displayQueryMember() {
         System.out.println(">>Query Member<<");
+        System.out.print("Enter Member Number: ");
+        String memberNum = readInput();
+
+        Renting renting = videoShop.queryMember(memberNum);
+        Copy copy = renting.getCopy();
+        Movie movie = videoShop.queryMovieByCopy(copy);
+
+        System.out.println("Movie Details:");
+        System.out.println(movie);
+        System.out.println("Copy Details: ");
+        System.out.println(copy);
+
+        System.out.println("Hit Enter to return to Main Menu");
+        readEnter();
+
     }
 
     public void displayMovieRental() {
         System.out.println(">>Movie Rental<<");
+        String option = "1";
+        while (option.equals("1")) {
+            System.out.print("Enter Member Number:");
+            String memberNum = readInput();
+            System.out.print("Enter Movie Title: ");
+            String title = readInput();
+            System.out.print("Enter Movie Format: ");
+            String format = readInput();
 
-        System.out.print("Enter Member Number:");
-        System.out.print("Enter Movie Title: ");
-        System.out.print("Enter Movie Format: ");
-        System.out.println("Saving Performed Continue to rent more movies? 1. Yes  2. No  ");
-        String option = readInput();
+            Copy rentingOn = videoShop.getSpecificCopy(title, format);
+            if (rentingOn != null) {
+                rentingOn.setStatus(Copy.RENT);
+                videoShop.makeRental(rentingOn, memberNum);
+            } else {
 
+            }
+
+            System.out.println("Saving Performed Continue to rent more movies? 1. Yes  2. No  ");
+            option = readInput();
+            if (option.equals("")) {
+                return;
+            }
+
+        }
 
     }
 }

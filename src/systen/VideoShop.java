@@ -12,18 +12,20 @@ import java.util.List;
 public class VideoShop {
     private static VideoShop theOne = new VideoShop();
 
-    private MovieSystem movieSystem = new MovieSystem();
-    private ArrayList members = new ArrayList();
+    static public MovieSystem movieSystem = new MovieSystem();
+    static public ArrayList members = new ArrayList();
+    static public ArrayList<Renting> rentings = new ArrayList<Renting>();
 
     private VideoShop() {
     }
+
 
     public static VideoShop getInstance() {
         return theOne;
     }
 
-    public void createMovie(String title, String year, String director, String rating, String genre, String format, double cost, int quantity) {
-        movieSystem.createMovie(title, year, director, rating, genre, format, cost, quantity);
+    public Movie createMovie(String title, String year, String director, String rating, String genre, String format, double cost, int quantity) {
+        return movieSystem.createMovie(title, year, director, rating, genre, format, cost, quantity);
     }
 
     public List<Movie> getAllMovies() {
@@ -34,10 +36,24 @@ public class VideoShop {
 
     }
 
-    public void makeRental(String movie, String format, String ContactNo) {
+    public void makeRental(Copy copy, String memberNum) {
+        Renting renting = new Renting();
+        renting.setCopy(copy);
+        renting.setMemberNum(memberNum);
+        rentings.add(renting);
     }
 
-    public void collectMovie(String title, String format, String memContactNo) {
+    public void collectMovie(String title, String format, String memberNum) {
+        for (int i = 0; i < rentings.size(); i++) {
+            Renting renting = rentings.get(i);
+            if (renting.getMemberNum().equals(memberNum)) {
+                Copy copy = renting.getCopy();
+                Movie movie = movieSystem.getMovieByCopy(copy.getId());
+                if (movie.getTitle().equals(title) && copy.getFormat().equals(format)) {
+                    rentings.remove(i);
+                }
+            }
+        }
     }
 
     public void displayMovieTitle() {
@@ -128,4 +144,35 @@ public class VideoShop {
     }
 
 
+    public Copy getSpecificCopy(String title, String format) {
+        Movie movie = movieSystem.getMovie(title);
+        Copy onecopy = null;
+        for (Copy copy : movie.getCopies()) {
+            if (copy.getFormat().equals(format) && copy.getStatus().equals(Copy.UNRENT)) {
+                onecopy = copy;
+
+            }
+        }
+        return onecopy;
+    }
+
+
+    public Movie searchMovie(String keyword, String meta) {
+
+        return movieSystem.search(keyword, meta);
+    }
+
+    public Renting queryMember(String memberNum) {
+        for (Renting renting : rentings) {
+            if (renting.getMemberNum().equals(memberNum)) {
+                return renting;
+            }
+        }
+        return null;
+    }
+
+    public Movie queryMovieByCopy(Copy copy) {
+
+        return movieSystem.getMovieByCopy(copy.getId());
+    }
 }

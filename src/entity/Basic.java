@@ -21,15 +21,16 @@ public class Basic extends Member implements Serialize {
     double lateFee ;
     double replaceFeeDVD ;
     double replaceFeeVCD ;
+    String memberType = "B";
 
     @Override
     public String toString() {
-        return "Basic{" +
-                "contactNo='" + contactNo + '\'' +
-                ", name='" + name + '\'' +
-                ", add='" + add + '\'' +
-                ", number='" + number + '\'' +
-                '}';
+        return
+                "contactNo=" + contactNo +
+                        ", name=" + name +
+                        ", address=" + add +
+                        ", number=" + number +
+                        ", Type (B/P): " + memberType;
     }
 
     public static Basic getInstance(String s) {

@@ -3,6 +3,8 @@ package entity;
 import entity.Member;
 import systen.Serialize;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by Junfeng on 2015/10/25.
  */
@@ -17,15 +19,24 @@ public class Premium extends Member implements Serialize {
     double lateFee;
     double replaceFeeDVD ;
     double replaceFeeVCD ;
+    String memberType = "P";
 
     @Override
     public String toString() {
-        return "Premium{" +
-                "contactNo='" + contactNo + '\'' +
-                ", name='" + name + '\'' +
-                ", add='" + add + '\'' +
-                ", number='" + number + '\'' +
-                '}';
+        return
+                "contactNo=" + contactNo +
+                        ", name=" + name +
+                        ", add=" + add +
+                        ", number=" + number +
+                        ", Type (B/P): " + memberType;
+    }
+
+    public static Premium getInstance(String s) {
+        StringTokenizer tokenizer = new StringTokenizer(s, "|");
+        return new Premium(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken(), Double.parseDouble(tokenizer.nextToken()),
+                Double.parseDouble(tokenizer.nextToken()), Double.parseDouble(tokenizer.nextToken()), Double.parseDouble(tokenizer.nextToken()),
+                Double.parseDouble(tokenizer.nextToken()));
+
     }
 
     public Premium(String contactNo, String name, String add, String number, double rentFee, double renewFee, double lateFee, double replaceFeeDVD, double replaceFeeVCD) {
@@ -40,6 +51,7 @@ public class Premium extends Member implements Serialize {
         this.replaceFeeVCD = replaceFeeVCD;
         id = Basic.increasementID++;
     }
+
 
     public String serialize() {
         return contactNo + "|" + name + "|" + add + "|" + number + "|" + rentFee + "|" + renewFee + "|" + lateFee + "|" + replaceFeeDVD + "|" + replaceFeeVCD;

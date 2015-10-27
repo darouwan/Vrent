@@ -1,5 +1,6 @@
 package systen;
 
+import entity.Copy;
 import entity.Movie;
 
 import java.util.ArrayList;
@@ -8,12 +9,41 @@ import java.util.ArrayList;
  * Created by Junfeng on 2015/10/24.
  */
 public class MovieSystem {
-    ArrayList<Movie> movies = new ArrayList<Movie>();
+    public ArrayList<Movie> movies = new ArrayList<Movie>();
 
-    void createMovie(String title, String year, String director, String rating, String genre, String format, double cost, int quantity) {
+    Movie createMovie(String title, String year, String director, String rating, String genre, String format, double cost, int quantity) {
         Movie movie = new Movie(title, year, director, rating, genre);
-        movie.addCopy(format, cost, "unrent", quantity);
+        movie.addCopy(format, cost, Copy.UNRENT, quantity);
         movies.add(movie);
+        return movie;
+    }
+
+    public Movie search(String keyword, String meta) {
+        for (Movie movie : movies) {
+            if (meta.equals("title") && movie.getTitle().equals(keyword)) {
+                return movie;
+            } else if (meta.equals("year") && movie.getYear().equals(keyword)) {
+                return movie;
+            } else if (meta.equals("director") && movie.getDirector().equals(keyword)) {
+                return movie;
+            } else if (meta.equals("rating") && movie.getRating().equals(keyword)) {
+                return movie;
+            } else if (meta.equals("genre") && movie.getGenre().equals(keyword)) {
+                return movie;
+            }
+        }
+        return null;
+    }
+
+    public Movie getMovieByCopy(int copyID) {
+        for (Movie movie : movies) {
+            for (Copy copy : movie.getCopies()) {
+                if (copy.getId() == copyID) {
+                    return movie;
+                }
+            }
+        }
+        return null;
     }
 
     public ArrayList<Movie> getAllMovies() {
@@ -41,4 +71,15 @@ public class MovieSystem {
     void displayMember(){
 
     }
+
+    public Movie getMovie(String title) {
+        for (Movie movie : movies) {
+            if (movie.getTitle().equals(title)) {
+                return movie;
+            }
+        }
+        return null;
+    }
+
+
 }
