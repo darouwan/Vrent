@@ -1,11 +1,9 @@
 package util;
 
 import entity.Basic;
-import entity.Member;
 import entity.Movie;
 import entity.Premium;
-import systen.MovieSystem;
-import systen.VideoShop;
+import system.VideoShop;
 
 import java.io.*;
 import java.util.ArrayList;

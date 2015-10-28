@@ -1,6 +1,6 @@
 package entity;
 
-import systen.Serialize;
+import system.Serialize;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

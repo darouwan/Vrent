@@ -1,4 +1,4 @@
-import systen.UI;
+import system.UI;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package systen;
+package system;
 
 import entity.*;
 

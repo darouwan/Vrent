@@ -1,4 +1,4 @@
-package systen;
+package system;
 
 /**
  * Created by Junfeng on 2015/10/25.

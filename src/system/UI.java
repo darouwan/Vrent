@@ -1,8 +1,6 @@
-package systen;
+package system;
 
 import entity.*;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import util.TextUtil;
 
 import java.util.List;
