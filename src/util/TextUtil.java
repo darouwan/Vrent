@@ -90,6 +90,10 @@ public class TextUtil {
     public void readFromFile() {
         BufferedReader reader = null;
         try {
+            if (!file.exists()) {
+                return;
+            }
+
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
 
