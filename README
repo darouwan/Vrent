@@ -1,3 +1,6 @@
 Compile all java files and Run the main method in Main class.
 
+$javac Main.java
+$java Main
+
 No third party lib is required.
